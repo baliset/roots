@@ -11,15 +11,13 @@ import {coverageMiddleware, coverageMiddlewareInit} from './coverage-middleware'
 // -- app specific slices --
 import {sliceConfig as localSlice, LocalState} from "./local-slice";
 import {sliceConfig as controlSlice, ControlState} from "./control-slice";
-import {sliceConfig as linnSlice, LinnState} from './linn-slice';
-import {sliceConfig as midiSlice, MidiState} from './midi-slice';
 import {sliceConfig as patchSlice, PatchState} from './patch-slice';
 
 
 //-- app specific middlewares
 
 
-export const allSlices = [requestSlice, notifySlice, coverageSlice, localSlice, controlSlice, midiSlice, linnSlice, patchSlice];
+export const allSlices = [requestSlice, notifySlice, coverageSlice, localSlice, controlSlice, patchSlice];
 export const allMiddlewares = [ fatalMiddleware, coverageMiddleware, loggingMiddleware];
 export const middlewareInits = [  coverageMiddlewareInit];
 
@@ -33,8 +31,6 @@ export type TotalState = {
   coverage: CoverageState;
      local: LocalState;
    control: ControlState;
-   linn: LinnState;
-   midi: MidiState;
    patch: PatchState;
 }
 
