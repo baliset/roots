@@ -4,7 +4,7 @@ import {Downloader} from "./Downloader";
 import jsyaml from 'js-yaml';
 
 
-const filename = 'linnstorm.settings.yaml';
+const filename = 'app.settings.yaml';
 const uploadLabel = 'choose a settings file to upload...';
 const downloadLabel = `Click to download as ${filename}`;
 
