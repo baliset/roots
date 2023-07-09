@@ -2,7 +2,7 @@
 # that should be injected with both build time and deploy time changes via appropriate build and deployment time scripts
 
 app:
-  name: LinnStorm
+  name: Weiqi
   url: static
 
 build:

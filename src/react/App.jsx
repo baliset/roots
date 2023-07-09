@@ -183,10 +183,8 @@ const  App = () => {
 
             <Navbar>
               <div style={{ margin: 'auto', width: '50%', display: 'inline-block'}}>
-              {/*<MyNavLink curPath={location.pathname} to="/">Intro</MyNavLink>*/}
-              <MyNavLink curPath={location.pathname} to="/params">Parameters</MyNavLink>
-              <MyNavLink curPath={location.pathname} to="/tuning">Tuning</MyNavLink>
-              <MyNavLink curPath={location.pathname} to="/midi">Midi View</MyNavLink>
+                <MyNavLink curPath={location.pathname} to="/intro">Intro</MyNavLink>
+                <MyNavLink curPath={location.pathname} to="/midi">Midi View</MyNavLink>
               {/*<MyNavLink curPath={location.pathname} to="/files">Import/Export Settings</MyNavLink>*/}
 
               </div>
@@ -221,7 +219,7 @@ const  App = () => {
                   <Routes>
                     <Route path="/"       element={<RtMidiview/>}/>
                     <Route path="/intro"  element={<Intro/>}/>
-                    <Route path="/files"  element={<RtFiles/>}/>
+                    <Route path="/midi"  element={<RtMidiview/>}/>
                   </Routes>
                 </>
             }
