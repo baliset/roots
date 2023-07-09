@@ -1,13 +1,3 @@
-import {tsToDate, tsToTime} from "./datexforms";
-import {isNumber} from "luxon/src/impl/util";
-import {currentLinnParams} from "../linnutils/mymidi";
-import {assignments, arpDir, tempoValues, rowOffsets, animations} from "../linnutils/linn-expansion"
-import {DateTime} from "luxon";
-
-const vgTsToTime = (params)=>isNumber(params.value)? tsToTime(params.value):undefined;
-const vgTsToDate = (params)=>isNumber(params.value)?  tsToDate(params.value):undefined;
-
-
 
 const defCol = {
     sortable:true,
@@ -21,14 +11,8 @@ const numberSort = (num1, num2) => {
 };
 
 
-// {nrpn:237, key: 'ArpOctaveExtension',     min: 0, max:   2, desc: "Arp Octave Extension (0: None, 1: +1, 2: +2)"},
-
-const arpOctExt= ['None', '+1', '+2'];
 
 
-const colors = ['!as set!','red','yellow','green','cyan','blue','magenta','!off!','white','orange','lime','pink'];
-const octave = [-5,-4,-3,-2,-1, 0,'+1','+2','+3','+4','+5'];
-const trPitch = [-7,-6,-5,-4,-3,-2,-1,0,'+1','+2','+3','+4','+5','+6','+7'];
 const pitchClass = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']; // flats are BEA sharps FC
 
 
@@ -54,70 +38,6 @@ function vfTime(p)
     return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}.${d.getMilliseconds()}`;
 
 }
-const dtfmt = "yy-MM-dd HH:mm:ss";
-
-function vfDateTime(p)
-{
-    const n = p?.value;
-    if(n === undefined)
-        return '';
-
-    return DateTime.fromMillis(n).toFormat(dtfmt);
-}
-
-
-function vfExpander(p)
-{
-    const r = p?.data;
-    if(!r)
-        return '?';
-
-    const v = p?.value;
-    if(v === undefined)
-        return '?';
-
-    const nrpn =   p?.data?.nrpn;
-
-    // there are pairs of values 0-66 and 100-166 that have same formatting
-    const nrpnNormalizedForSwitch = nrpn >= 100 && nrpn <=166? nrpn - 100: nrpn;
-
-    switch(nrpnNormalizedForSwitch)
-    {
-        case  30:
-        case  31:
-        case  32:
-        case  33: return `${v} (${colors[v]})`;
-
-        case  36: return `${v} (${octave[v]})`;
-
-        case  37:
-        case  38: return `${v} (${trPitch[v]})`;
-
-        case  61: return `${v} (${animations[v]})`;
-
-        case 201: return `${v} (${v? 'Right': 'Left'})`;
-        case 227: return v > 13? `${v}? (0,3-7,12,127)`: `${v} (${rowOffsets[v]})`;
-
-        case 228:
-        case 229:
-        case 230:
-        case 231: return `${v} (${assignments[v]})`;
-
-        case 235: return `${v}  (${arpDir[v]})`;
-        case 236: return `${v}  (${tempoValues[v]})`;
-        case 237: return `${v} (${arpOctExt[v]})`;
-        case 247: return `${v} (${pitchClass[v]})`;
-        case 253: return `${v} (${v<=32? v-16:'Inverted Guitar'})`;
-
-        default:  return v;
-
-    }
-
-
-
-
-}
-
 
 function toAgColDef(v) {
 
@@ -136,90 +56,6 @@ function toAgColDef(v) {
 
 }
 
-const nw = 65;
-
-function vgCurrent(p) {
-    const r = p?.data;
-    return p?.data? currentLinnParams[r?.nrpn]: '?';
-
-}
-
-// todo kludge kludge kludge
-let diffX = 'a';
-let diffY = 'b';
-
-export function setDiffColumns(x,y) {diffX = x; diffY = y;}
-
-function vgDiffer() {
-    return function(p) {
-        const r = p?.data;
-        if(r) {
-            const x = r[diffX];
-            const y = r[diffY];
-            const equal = x === y;            // e.g. 0=0 1=1 however also undefined=undefined
-            const hasX = (x !== undefined);
-
-            if(equal) {
-                return equal && hasX? 'same': 'empty';
-            } else {
-                const hasY = (y !== undefined);
-                return hasY? (hasX? 'diff': '==>'): '<=='; // only mark different if both are populate, otherwise only one side populated
-            }
-        }
-        return '?';
-    }
-
-}
-
-function vgDiffCurrent(p) {
-    const r = p?.data;
-    if(r)
-        return r.b === r.c? 'same': 'diff'
-
-    return '?';
-}
-
-
-
-
-
-function vgDiffDefaults(p) {
-    const r = p?.data;
-    if(r)
-        return r.b === r.d? 'same': 'diff'
-
-    return '?';
-}
-
-const linnPropColumns = [
-    {f:'sel', maxWidth:50, cellRenderer: 'checkboxRenderer'},
-    {f:'nrpn', maxWidth:90, comparator:numberSort},
-    {f:'cat', maxWidth:75},
-    {f: 'side', maxWidth: 75},
-    {f:'subcat',  maxWidth:85},
-
-
-    // todo these columns for now must be indices
-    {f:'a',  maxWidth:85, comparator:numberSort, editable:true, cellRenderer: 'linnParamRenderer'},
-    {f:'b',  maxWidth:85,comparator:numberSort, valueFormatter:vfExpander, cellRenderer: 'linnParamRenderer'},
-    {f:'c',   maxWidth:85, valueGetter:vgCurrent, comparator:numberSort, valueFormatter:vfExpander, cellRenderer: 'linnParamRenderer'},
-    {f:'d',  maxWidth:85, comparator:numberSort, cellRenderer: 'linnParamRenderer'},
-
-
-    {f:'diff',  maxWidth:85, valueGetter:vgDiffer(), cellRenderer: 'diffRenderer'},
-
-
-    {f:'key',  minWidth:250}, {f:'min',maxWidth:nw}, {f:'max',maxWidth: nw},
-    {f:'desc', h:'Description', width: 500, tooltipValueGetter: (p) =>p.value}
-].map(o=>({...o,  suppressMenu: true, floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }}));  //'agSetColumnFilter'
-
-// a subset of columns used in a color editor so all values in list are colors
-const linnColorColumns = [
-    {f: 'side', maxWidth: 75},
-    {f:'a',  h:'color', maxWidth:105, comparator:numberSort, editable:true, cellEditor: 'colorEditor',  cellEditorPopup: true, cellRenderer: 'linnParamRenderer'},
-    {f:'key',  minWidth:115,  maxWidth:115}
-].map(o=>({...o,  suppressMenu: true}));  //'agSetColumnFilter'
-
 
  const midiColumns = [
     {f:'id', maxWidth:65, comparator:numberSort,},
@@ -235,17 +71,5 @@ const linnColorColumns = [
 ].map(o=>({...o,  suppressMenu: true, floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }}));
 
 
-const patchColumns = [
-    {f:'sel', maxWidth:50, cellRenderer: 'checkboxRenderer', floatingFilter:false},
-    {f: 'updated', maxWidth:140, comparator:numberSort, cellRenderer: 'updatedRenderer'},
-    {f: 'name', maxWidth:140, editable: true, cellEditor: 'patchNameEditor', cellRenderer: 'patchNameRenderer', floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }},
-    {f: 'keys', maxWidth: 60, comparator:numberSort,},
-    {f: 'comments', editable: true, cellEditor: 'patchCommentEditor', floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }},
-].map(o=>({...o,  suppressMenu: true, }));
-
-export const linnPropColumnDefs = linnPropColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions
-export const linnColorColumnsDef = linnColorColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions
-
 
 export const midiColumnDefs = midiColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions
-export const patchColumnDefs = patchColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions

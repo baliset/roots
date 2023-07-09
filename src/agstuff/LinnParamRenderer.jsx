@@ -1,5 +1,4 @@
 import React from 'react';
-import {vfExpander, vfParamType} from "../linnutils/linn-expansion";
 import styled from "styled-components";
 
 export const colors = [
@@ -20,16 +19,7 @@ export const Swatch = styled.div`
 export const  LinnParamRenderer = ({data, value}) => {
   if(data === undefined)
     return <></>
-
   const {nrpn} = data;
-
-  const  pt = vfParamType(nrpn);
-  const str = vfExpander(nrpn, value);
-
-  switch(pt) {
-    case 'color': return <Swatch color={value}>{str}</Swatch>
-    case '': return str;
-    default: return str;
-  }
+  return <Swatch color={value}>{nrpn}</Swatch>
 }
 

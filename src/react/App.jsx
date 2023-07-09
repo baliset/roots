@@ -11,11 +11,8 @@ import {SnackbarProvider} from "notistack";
 import {NotifyWrapper} from "./NotifyWrapper";
 import {Modal} from "./Modal";
 import {SliceView} from "./SliceView";
-import {RtParameter} from "./RtParameters";
-import RtTuning from "./RtTuning";
 import {RtMidiview} from "./RtMidiview";
 import {RtFiles} from "./RtFiles.jsx";
-import {midiSetup} from "../linnutils/mymidi.ts";
 
 const palette = {
       plum: '#4b54a1',
@@ -138,8 +135,8 @@ const Intro = () =>{
                 shouldExpandNodeInitially={should} />
                 <h1>Other Links</h1>
                 <ul>
-                 <li><NewTabLink href="https://www.rogerlinndesign.com/linnstrument">Roger Linn Design</NewTabLink></li>
-                  <li><NewTabLink href="https://www.rogerlinndesign.com/support/linnstrument-support-panel-settings">Manual</NewTabLink></li>
+                 <li><NewTabLink href="https://www.lifein19x19.com/">Life In 19x19 Forum</NewTabLink></li>
+                  <li><NewTabLink href="https://senseis.xmp.net/">Sensei's Libary (A Go Wiki)</NewTabLink></li>
 
                 </ul>
     </div>
@@ -147,8 +144,6 @@ const Intro = () =>{
   </section>);
 }
 
-
-midiSetup( actions.midi);
 
 const  App = () => {
   const location = useLocation();
@@ -224,11 +219,8 @@ const  App = () => {
                 :
                 <>
                   <Routes>
-                    <Route path="/"       element={<RtParameter/>}/>
+                    <Route path="/"       element={<RtMidiview/>}/>
                     <Route path="/intro"  element={<Intro/>}/>
-                    <Route path="/params" element={<RtParameter/>}/>
-                    <Route path="/tuning" element={<RtTuning/>}/>
-                    <Route path="/midi"   element={<RtMidiview/>}/>
                     <Route path="/files"  element={<RtFiles/>}/>
                   </Routes>
                 </>

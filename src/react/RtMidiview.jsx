@@ -5,7 +5,6 @@ import {actions} from "../actions-integration";
 import {selectors} from "../actions/selectors";
 import {useSelector} from "../actions-integration";
 import {CheckGroup} from "./CheckGroup.jsx";
-import {resetRecordable} from "../linnutils/mymidi";
 
 const getRowNodeId = data=>data.id
 const gridstyle = {height: '700px', width: '100%'};
