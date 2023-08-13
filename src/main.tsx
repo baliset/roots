@@ -4,6 +4,24 @@ import { createRoot } from 'react-dom/client';
 import {Config} from "./utils/config";
 import {actions, connectRootComponent} from './actions-integration';
 import {AboveApp} from './react/AboveApp';
+import {deprecate} from './decorators/decorators';
+
+
+class TestMe
+{
+  constructor() {
+  }
+
+  mymethod() {
+    console.log("I'm a deprecated method");
+  }
+
+}
+
+
+
+const x = new TestMe();
+x.mymethod();
 
 (async ()=>{
   try {

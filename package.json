@@ -38,8 +38,8 @@
     "@types/styled-components": "~5.1.26",
     "redux-devtools-extension": "~2.13.9",
     "typescript": "~4.9.3",
-    "vite": "~4.1.0",
-    "vite-bundle-visualizer": "~0.6.0",
-    "@vitejs/plugin-react-swc": "~3.1.0"
+    "vite": "~4.4.5",
+    "vite-bundle-visualizer": "~0.8.1",
+    "@vitejs/plugin-react-swc": "~3.3.2"
   }
 }

@@ -1,9 +1,79 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
      width="1080" height="1080"
-     viewBox="0 0 1080 1080" xml:space="preserve">
-<desc>hand-coded weiqi favicon</desc>
+     viewBox="0 0 1080 1080" xml:space="preserve"
+
+     >
+     <desc>hand-coded weiqi favicon</desc>
+
+     <defs>
+          <linearGradient id="lclam" x1="0%" x2="100%" y1="0%"  y2="0%">
+               <stop offset="0%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="20%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="21%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="22.5%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="23.5%" style="stop-color:#eee;stop-opacity:1" />
+
+
+               <stop offset="30%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="31%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="32%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="40%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="41%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="41.5%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="42.5%" style="stop-color:#eee;stop-opacity:1" />
+
+               <stop offset="44%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="50%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="51%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="51.5%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="60%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="61%" style="stop-color:#eee;stop-opacity:1" />
+               <stop offset="62%" style="stop-color:white;stop-opacity:1" />
+               <stop offset="100%" style="stop-color:white;stop-opacity:1" />
+
+          </linearGradient>
+
+          <radialGradient id="clam" cx="80%" cy="0%" r="300%" fx="100%" fy="10%">
+
+          <stop offset="0%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="20%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="21%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="22.5%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="23.5%" style="stop-color:#eee;stop-opacity:1" />
+
+
+          <stop offset="30%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="31%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="32%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="40%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="41%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="41.5%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="42.5%" style="stop-color:#eee;stop-opacity:1" />
+
+          <stop offset="44%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="51%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="51.5%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="60%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="61%" style="stop-color:#eee;stop-opacity:1" />
+          <stop offset="62%" style="stop-color:white;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:white;stop-opacity:1" />
+          </radialGradient>
+          <radialGradient id="clam1" xlink:href="#clam" gradientTransform="translate(0,1)"/>
+          <radialGradient id="clam2" xlink:href="#clam" gradientTransform="translate(-0.4,-0.3)"/>
+          <radialGradient id="clam3" xlink:href="#clam" gradientTransform="rotate(90,0,0)"/>
+          <radialGradient id="clam4" xlink:href="#clam" gradientTransform="rotate(45,0,0)"/>
+
+
+          <g id="bl" fill="black">
+               <circle r="125" cx="0" cy="0"/>
+          </g>
+     </defs>
+
      <g stroke="black" stroke-width="15">
-     <rect stroke-width="30" x="0" y="0" width="1080" height="1080" fill="#fb7" />
+
+          <rect stroke-width="30" x="0" y="0" width="1080" height="1080" fill="#fb7" />
           <line x1="270" y1="0" x2="270" y2="1080" />
           <line x1="540" y1="0" x2="540" y2="1080" />
           <line x1="810" y1="0" x2="810" y2="1080" />
@@ -11,16 +81,15 @@
           <line y1="540" x1="0" y2="540" x2="1080" />
           <line y1="810" x1="0" y2="810" x2="1080" />
 
-          <g fill="white">
-          <circle r="130" cx="270" cy="540" />
-               <circle r="130" cx="540" cy="270" />
-               <circle r="130" cx="810" cy="540" />
-
-     </g>
+          <g fill="url(#clam1)">
+               <circle fill="url(#clam)" r="125" cx="270" cy="540" />
+               <circle fill="url(#clam2)" r="125" cx="543" cy="270" />
+               <circle fill="url(#clam3)" r="125" cx="810" cy="540" />
+          </g>
           <g fill="black">
-          <circle r="130" cx="810" cy="810"/>
-               <circle r="130" cx="540" cy="540"/>
-     </g>
+          <use xlink:href="#bl" x="540" y="540"/>
+          <circle r="125" cx="790" cy="810"/>
+          </g>
 
    </g>
 </svg>
