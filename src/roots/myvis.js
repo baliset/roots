@@ -6,13 +6,13 @@ let edgeMax;
 
 function populateNodes(roots)
 {
-    var nodes = [];
+    const nodes = [];
 
-    var max = Math.min(hardMax, roots.length);
+    const max = Math.min(hardMax, roots.length);
 
-    for (var i = 0, len = max; i < len; ++i) {
-        var root = roots[i];
-        var node = {id:i+1, label: root.P + root.E + root.L};
+    for (let i = 0, len = max; i < len; ++i) {
+        const root = roots[i];
+        const node = {id:i+1, label: root.P + root.E + root.L};
         if(root.d)
           node.title = root.d;
         else
@@ -50,16 +50,16 @@ const arrMischalfim = [
 
 function buildMischalfim(arr)
 {
-  var result = {};
+  const result = {};
 
-  for (var i = 0; i < arr.length; ++i) {
-    var set = arr[i].data;
+  for (let i = 0; i < arr.length; ++i) {
+    const set = arr[i].data;
     for (var j = 0; j < set.length; ++j) {
-      var key = set[j];
+      const key = set[j];
       for (var k = 0; k < set.length; ++k) {
-        var m = set[k];
+        const m = set[k];
         if (m !== key) {
-          var o = result[key];
+          let o = result[key];
           if (o === undefined) {
             o = result[key] = {};
           }
@@ -79,14 +79,14 @@ const mischalfim = buildMischalfim(arrMischalfim);
 
 function mischalef(a,b)
 {
-    var ao = mischalfim[a];
+    const ao = mischalfim[a];
 
     return (ao && ao[b]);
 }
 
 function twoMatch(p,e,l, cand)
 {
-    var matches = 0;
+    let matches = 0;
     if(p === cand.P)
         ++matches;
     if(e === cand.E)
@@ -98,7 +98,7 @@ function twoMatch(p,e,l, cand)
 
 }
 
-
+/*
  function containsNameOfHashem()
  {
    // yod heh
@@ -115,7 +115,7 @@ function firstOrLastTwoMatch(p,e,l,cand)
     }
     return false;
 }
-
+*/
 
 // if the first letter is the same
 // and the second letter is a vav
@@ -150,7 +150,7 @@ function pairMischalef(p,e,l, cand)
 // return index of matching item from
 function findEdge(p,e,l, roots, index)
 {
-    var cand = roots[index];
+    const cand = roots[index];
 
     if (twoMatch(p, e, l, cand)) {
         if(mischalef(p, cand.P) || mischalef(e, cand.E) || mischalef(l, cand.L)) {
@@ -164,8 +164,8 @@ function findEdge(p,e,l, roots, index)
     return -1;
 }
 
-var mappedEdges = {};
-var edgeCount = 0;
+const mappedEdges = {};
+let edgeCount = 0;
 function createEdge(aidx, bidx, edges) {
     if(bidx < 0)
         return null;
@@ -173,7 +173,7 @@ function createEdge(aidx, bidx, edges) {
         return null;
 
     // canonical key
-    var key = '' + ((aidx < bidx)? (aidx + '_' + bidx) : (bidx + '_' + aidx));
+    const key = '' + ((aidx < bidx)? (aidx + '_' + bidx) : (bidx + '_' + aidx));
 
     if (mappedEdges[key])
         return null;
@@ -189,11 +189,11 @@ function createEdge(aidx, bidx, edges) {
 
 function dumpEdges(edges)
 {
-    var div =  $('#edges');
+    const div =  $('#edges');
     div.append("edges=[");
-    for(var i = 0; i < edges.length; ++i)
+    for(let i = 0; i < edges.length; ++i)
     {
-        var e = edges[i];
+        const e = edges[i];
         div.append("<div>{from:" + e.from + ", to: " + e.to + "},</div>");
     }
     div.append("<div>];</div>");
@@ -201,11 +201,11 @@ function dumpEdges(edges)
 
 function dumpNodes(nodes)
 {
-    var div =  $('#nodes');
+    const div =  $('#nodes');
     div.append("nodes=[");
-    for(var i = 0; i < nodes.length; ++i)
+    for(let i = 0; i < nodes.length; ++i)
     {
-        var n = nodes[i];
+        const n = nodes[i];
         div.append("<div>{id:" + n.id + ", label: '" + n.label + "'},</div>");
     }
     div.append("<div>];</div>");
@@ -214,17 +214,17 @@ function dumpNodes(nodes)
 
 
 function populateEdges(roots) {
-    var edges = [];
+    const edges = [];
 
     console.log('populate edges: hardMax', hardMax);
     for (let i = 0, len = hardMax; i < len; ++i) {
-        var src = roots[i];
+        const src = roots[i];
         for(let j = 0, mlen = hardMax; j < mlen; ++j)
         {
             if (edgeCount === edgeMax)
                 return edges;
             if (j !== i) {
-                var matchindex = findEdge(src.P, src.E, src.L, roots, j);
+                const matchindex = findEdge(src.P, src.E, src.L, roots, j);
                 if (matchindex >= 0) {
                     createEdge(i, matchindex, edges);
                 }
@@ -236,18 +236,18 @@ function populateEdges(roots) {
 
 function diagram(list)
 {
-    var nodes = populateNodes(list);
-    var edges = populateEdges(list);
+    const nodes = populateNodes(list);
+    const edges = populateEdges(list);
 //
 //        dumpNodes(nodes);
 //        dumpEdges(edges);
 
-    var container = document.getElementById('vis');
-    var data= {
+    const container = document.getElementById('vis');
+    const data= {
         nodes: nodes,
         edges: edges
     };
-    var options = {
+    const options = {
         width: '1000px',
         height: '800px',
         nodes: {
@@ -271,7 +271,7 @@ function diagram(list)
         }
 
     };
-    var network = new vis.Network(container, data, options);
+    const network = new vis.Network(container, data, options);
 
 
 }
