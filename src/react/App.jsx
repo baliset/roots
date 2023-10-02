@@ -13,6 +13,7 @@ import {Modal} from "./Modal";
 import {SliceView} from "./SliceView";
 import {RtGridView} from "./RtGridView.jsx";
 import {RtFiles} from "./RtFiles.jsx";
+import {RtStarView} from "./RtStarView.jsx";
 
 const palette = {
       plum: '#4b54a1',
@@ -185,7 +186,9 @@ const  App = () => {
               <div style={{ margin: 'auto', width: '50%', display: 'inline-block'}}>
                 <MyNavLink curPath={location.pathname} to="/intro">Intro</MyNavLink>
                 <MyNavLink curPath={location.pathname} to="/grid">Grid View</MyNavLink>
-              {/*<MyNavLink curPath={location.pathname} to="/files">Import/Export Settings</MyNavLink>*/}
+                <MyNavLink curPath={location.pathname} to="/star">Visualization</MyNavLink>
+
+                {/*<MyNavLink curPath={location.pathname} to="/files">Import/Export Settings</MyNavLink>*/}
 
               </div>
               <div style={{float:'right', display: 'inline-block', marginRight:'20px'}}>
@@ -220,6 +223,8 @@ const  App = () => {
                     <Route path="/"       element={<RtGridView/>}/>
                     <Route path="/intro"  element={<Intro/>}/>
                     <Route path="/grid"  element={<RtGridView/>}/>
+                    <Route path="/star"  element={<RtStarView/>}/>
+
                   </Routes>
                 </>
             }
