@@ -16,6 +16,20 @@ const numberSort = (num1, num2) => {
 const pitchClass = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']; // flats are BEA sharps FC
 
 
+function vfShoresh(p)
+{
+  const n = p?.data;
+  if(n === undefined)
+    return '';
+
+  const pc = n % 12;
+  const oct = Math.trunc(n / 12) - 1;
+  const {P,E,L} = p.data;
+
+  return `${L}${E}${P}`;
+
+
+}
 function vfMidiNote(p)
 {
     const n = p?.value;
@@ -46,6 +60,7 @@ function toAgColDef(v) {
 
     const o = {...v};
 
+   o.cellStyle = {fontSize: '18px'};
 
     o.headerName = (o.h||o.f).toUpperCase();
     o.field = o.f;
@@ -56,20 +71,16 @@ function toAgColDef(v) {
 
 }
 
+ const rootsColumns = [
+   {f:'id',maxWidth:65, comparator:numberSort},
+   {f: 'r', h:'שרש', maxWidth:75},
+   {f:'P', h:'פ', maxWidth:50},
+   {f:'E', h:'ע', maxWidth:50},
+   {f:'L', h:'ל', maxWidth:50},
+   {f:'d', h: 'definition', width:500, maxWidth:2000}, //valueFormatter:vfMidiNote
 
- const midiColumns = [
-    {f:'id', maxWidth:65, comparator:numberSort,},
-    {f:'time', maxWidth:130, comparator:numberSort, valueFormatter:vfTime },
-    {f:'dir', maxWidth:50},
-    {f: 'src', minWidth:200, maxWidth:200},
-    {f:'ch', minWidth:50, maxWidth:50, comparator:numberSort,},
-    {f:'note', minWidth:65, maxWidth: 65, comparator:numberSort, valueFormatter:vfMidiNote},  // todo formatter that displays number as string, filter, etc.
-    {f:'cmd',  maxWidth:350},
-    {f:'type', minWidth:80, maxWidth:80},
-    {f:'value', maxWidth:70},
-    {f:'hex', maxWidth:250},
-].map(o=>({...o,  suppressMenu: true, floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }}));
+ ].map(o=>({...o, suppressMenu: true, floatingFilter: true, floatingFilterComponentParams: { suppressFilterButton: true }}));
 
 
 
-export const midiColumnDefs = midiColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions
+export const rootsColumnDefs = rootsColumns.map(o=>toAgColDef(o)); // xform abbrievated column definitions to AgGrid spec columnDefinitions

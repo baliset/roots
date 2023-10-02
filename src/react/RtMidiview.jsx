@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {MyGrid} from "./MyGrid";
-import { midiColumnDefs} from "../xform/columndefs";
+import { rootsColumnDefs} from "../xform/columndefs";
 import {actions} from "../actions-integration";
 import {selectors} from "../actions/selectors";
 import {useSelector} from "../actions-integration";
 import {CheckGroup} from "./CheckGroup.jsx";
+import {roots} from '../roots/roots';
 
 const getRowNodeId = data=>data.id
 const gridstyle = {height: '700px', width: '100%'};
@@ -14,7 +15,7 @@ export const  RtMidiview = () => {
   const {
   } = useSelector(s=>s);
   // todo this is very inefficient, but fine for now
-  const rowData = []; // instead of midiview
+  const rowData= roots; // instead of midiview
 
 
   const ffFilter = o => {
@@ -26,7 +27,7 @@ export const  RtMidiview = () => {
     return search.includes(FILTER);
   };
 
-  const columnDefs =  midiColumnDefs;
+  const columnDefs =  rootsColumnDefs;
 
 
 
@@ -41,7 +42,7 @@ export const  RtMidiview = () => {
         &nbsp; Midi Event Count:  {rowData.length}
 
         <hr/>
-      {/*<MyGrid style={gridstyle} rowData={rowData.filter(ffFilter)} columnDefs={columnDefs}  getRowNodeId={getRowNodeId}/>*/}
+      <MyGrid style={gridstyle} rowData={rowData.filter(ffFilter)} columnDefs={columnDefs}  getRowNodeId={getRowNodeId}/>
       </>
     );
 };

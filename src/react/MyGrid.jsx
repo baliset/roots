@@ -1,29 +1,17 @@
 import React, {useCallback, useRef} from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-balham.min.css';
 import 'react-contexify/ReactContexify.css';
 
 import {CheckboxRenderer} from '../agstuff/CheckboxRenderer';
-import {LinnParamRenderer} from "../agstuff/LinnParamRenderer";
-import {UpdatedRenderer} from "../agstuff/UpdatedRenderer";
-import {PatchNameRenderer} from "../agstuff/PatchNameRenderer";
 import {DiffRenderer} from "../agstuff/DiffRenderer";
-import {PatchNameEditor, PatchCommentEditor} from "../agstuff/PatchEditors";
-import  {ColorEditor} from "../agstuff/ColorEditor";
 
 
 
 const frameworkComponents = {
     checkboxRenderer:CheckboxRenderer,
     diffRenderer:DiffRenderer,
-    linnParamRenderer: LinnParamRenderer,
-    updatedRenderer: UpdatedRenderer,
-    patchNameRenderer:PatchNameRenderer,
-    patchNameEditor:PatchNameEditor,
-    patchCommentEditor:PatchCommentEditor,
-    colorEditor:ColorEditor,
 };
 
 export const  MyGrid = ({children, style, contextM, rowData, columnDefs,  getRowNodeId, dark=true}) => {
@@ -36,6 +24,7 @@ export const  MyGrid = ({children, style, contextM, rowData, columnDefs,  getRow
         <div  className={className} style={style}>
             {children}
             <AgGridReact
+                enableRtl={true}
                 onCellContextMenu={contextM}
                 onGridReady={ready}
                 ref={gridRef}
