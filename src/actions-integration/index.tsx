@@ -17,6 +17,9 @@ import {SliceConfig} from './types';
 
 import {allSlices, allMiddlewares, middlewareInits, TotalState} from "../actions/combined-slices";
 
+//@ts-ignore
+window.global = window;  // the value global is assumed by react-graph-vis uuid utility
+
 //----- reducers and actions ----
 // reason to combine a console statement has to do with exceptions thrown while just loading a module
 // making reading the causing exception completely unreliable in the log until that pattern is fixed
