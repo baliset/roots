@@ -14,7 +14,7 @@ const frameworkComponents = {
     diffRenderer:DiffRenderer,
 };
 
-export const  MyGrid = ({children, style, contextM, rowData, columnDefs,  getRowNodeId, dark=true}) => {
+export const  MyGrid = ({children, style, contextM, rowData, columnDefs,  onFilterChanged, getRowNodeId, dark=true}) => {
     const gridRef = useRef(null);
     const ready = useCallback(e=>{console.log(`ready event`, e)},[]);
 
@@ -24,6 +24,7 @@ export const  MyGrid = ({children, style, contextM, rowData, columnDefs,  getRow
         <div  className={className} style={style}>
             {children}
             <AgGridReact
+                onFilterChanged={onFilterChanged}
                 enableRtl={true}
                 onCellContextMenu={contextM}
                 onGridReady={ready}

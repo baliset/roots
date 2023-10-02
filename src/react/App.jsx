@@ -11,7 +11,7 @@ import {SnackbarProvider} from "notistack";
 import {NotifyWrapper} from "./NotifyWrapper";
 import {Modal} from "./Modal";
 import {SliceView} from "./SliceView";
-import {RtMidiview} from "./RtMidiview";
+import {RtGridView} from "./RtGridView.jsx";
 import {RtFiles} from "./RtFiles.jsx";
 
 const palette = {
@@ -184,7 +184,7 @@ const  App = () => {
             <Navbar>
               <div style={{ margin: 'auto', width: '50%', display: 'inline-block'}}>
                 <MyNavLink curPath={location.pathname} to="/intro">Intro</MyNavLink>
-                <MyNavLink curPath={location.pathname} to="/midi">Midi View</MyNavLink>
+                <MyNavLink curPath={location.pathname} to="/grid">Grid View</MyNavLink>
               {/*<MyNavLink curPath={location.pathname} to="/files">Import/Export Settings</MyNavLink>*/}
 
               </div>
@@ -217,9 +217,9 @@ const  App = () => {
                 :
                 <>
                   <Routes>
-                    <Route path="/"       element={<RtMidiview/>}/>
+                    <Route path="/"       element={<RtGridView/>}/>
                     <Route path="/intro"  element={<Intro/>}/>
-                    <Route path="/midi"  element={<RtMidiview/>}/>
+                    <Route path="/grid"  element={<RtGridView/>}/>
                   </Routes>
                 </>
             }

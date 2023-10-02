@@ -10,12 +10,18 @@ import {roots} from '../roots/roots';
 const getRowNodeId = data=>data.id
 const gridstyle = {height: '700px', width: '100%'};
 
-export const  RtMidiview = () => {
+const rowData= roots;
+
+export const  RtGridView = () => {
   const [filter, setFilter]  = useState('');
+  const [filteredCount, setFilteredCount] = useState(rowData.length);
+
+  const onFilterChanged = useCallback(ev =>setFilteredCount(ev.api.rowModel.rowsToDisplay.length));
+
+
   const {
   } = useSelector(s=>s);
   // todo this is very inefficient, but fine for now
-  const rowData= roots; // instead of midiview
 
 
   const ffFilter = o => {
@@ -38,11 +44,10 @@ export const  RtMidiview = () => {
       </div>
       <hr/>
         &nbsp;&nbsp;Filter: <input id="gfilter" name="gfilter" type="text" value={filter} onChange={event => setFilter(event.target.value)}/>
-        &nbsp;&nbsp;<button onClick={()=>{}}>Clear Midi Events</button>
-        &nbsp; Midi Event Count:  {rowData.length}
+        &nbsp; Filtered/Total Roots:  {`${filteredCount}/${rowData.length}`}
 
         <hr/>
-      <MyGrid style={gridstyle} rowData={rowData.filter(ffFilter)} columnDefs={columnDefs}  getRowNodeId={getRowNodeId}/>
+      <MyGrid onFilterChanged={onFilterChanged} style={gridstyle} rowData={rowData.filter(ffFilter)} columnDefs={columnDefs}  getRowNodeId={getRowNodeId}/>
       </>
     );
 };
