@@ -1,26 +1,19 @@
 /**
- * Created by hzamir on 10/13/14.
+ * Created by hzamir on 10/13/14. revised 10/2/2023
  */
-let hardMax;
-let edgeMax;
 
-function populateNodes(roots)
+function populateNodes(roots, nodeMax)
 {
-    const nodes = [];
+    const max = Math.min(nodeMax, roots.length);
 
-    const max = Math.min(hardMax, roots.length);
+    return roots.slice(0, max).map((o,i)=>({id:i+1, label:o.r, title:o.d}));
 
-    for (let i = 0, len = max; i < len; ++i) {
-        const root = roots[i];
-        const node = {id:i+1, label: root.P + root.E + root.L};
-        if(root.d)
-          node.title = root.d;
-        else
-          node.color='cornsilk';
-        nodes.push(node);
-    }
+  // const node = {id:i+1, label: root.P + root.E + root.L};
+  // if(root.d)
+  //   node.title = root.d;
+  // else
+  //   node.color='cornsilk';
 
-    return nodes;
 }
 
 
@@ -187,33 +180,33 @@ function createEdge(aidx, bidx, edges) {
 }
 
 
-function dumpEdges(edges)
-{
-    const div =  $('#edges');
-    div.append("edges=[");
-    for(let i = 0; i < edges.length; ++i)
-    {
-        const e = edges[i];
-        div.append("<div>{from:" + e.from + ", to: " + e.to + "},</div>");
-    }
-    div.append("<div>];</div>");
-}
+// function dumpEdges(edges)
+// {
+//     const div =  $('#edges');
+//     div.append("edges=[");
+//     for(let i = 0; i < edges.length; ++i)
+//     {
+//         const e = edges[i];
+//         div.append("<div>{from:" + e.from + ", to: " + e.to + "},</div>");
+//     }
+//     div.append("<div>];</div>");
+// }
+//
+// function dumpNodes(nodes)
+// {
+//     const div =  $('#nodes');
+//     div.append("nodes=[");
+//     for(let i = 0; i < nodes.length; ++i)
+//     {
+//         const n = nodes[i];
+//         div.append("<div>{id:" + n.id + ", label: '" + n.label + "'},</div>");
+//     }
+//     div.append("<div>];</div>");
+//
+// }
+//
 
-function dumpNodes(nodes)
-{
-    const div =  $('#nodes');
-    div.append("nodes=[");
-    for(let i = 0; i < nodes.length; ++i)
-    {
-        const n = nodes[i];
-        div.append("<div>{id:" + n.id + ", label: '" + n.label + "'},</div>");
-    }
-    div.append("<div>];</div>");
-
-}
-
-
-function populateEdges(roots) {
+function populateEdges(roots, hardMax, edgeMax) {
     const edges = [];
 
     console.log('populate edges: hardMax', hardMax);
@@ -234,15 +227,14 @@ function populateEdges(roots) {
     return edges;
 }
 
-function diagram(list)
+function diagram(list, nodeMax, edgeMax)
 {
-    const nodes = populateNodes(list);
-    const edges = populateEdges(list);
+    const nodes = populateNodes(list, nodeMax);
+    const edges = populateEdges(list, nodeMax, edgeMax);
 //
 //        dumpNodes(nodes);
 //        dumpEdges(edges);
 
-    const container = document.getElementById('vis');
     const data= {
         nodes: nodes,
         edges: edges
@@ -259,32 +251,30 @@ function diagram(list)
                     border: 'red'
                 }
             },
-            shape: 'label'
+            shape: 'ellipse'
         },
         edges: { color:'white', width: 4},
-        keyboard: {
+        interaction: {
+          keyboard: {
             speed: {
-                x: 10,
-                y: 10,
-                zoom: 0.02
+              x: 10,
+              y: 10,
+              zoom: 0.02
             }
+          }
         }
 
     };
-    const network = new vis.Network(container, data, options);
-
+    // const network = new vis.Network(container, data, options);
+    return {nodeMax, edgeMax, options, data};
 
 }
 
-function stats()
+
+export function renderGraphData(list, maxNodes, maxEdges)
 {
-    $('#edgecount').text(''+edgeCount);
+    const nodeMax = Math.min(maxNodes, list.length);
+    return diagram(list, nodeMax, maxEdges);
 }
 
-function render(list, maxNodes, maxEdges)
-{
-    hardMax = Math.min(maxNodes, list.length);
-    edgeMax = maxEdges;
-    diagram(list);
-    stats();
-}
+export const toRender = {graphableRows:{}}
