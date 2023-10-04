@@ -1,8 +1,9 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import styled from 'styled-components';
 
 const Span = styled.span`
   margin: 10px;
+  white-space: nowrap ;
 `;
 
 const Heading = styled.span`
@@ -28,6 +29,6 @@ export const CheckGroup = ({heading, active, name, choices,  setChoice}) => {
      <label htmlFor={k}>{k}</label>
     </Span>
      ));
-  return (<div><Heading>{heading}</Heading>{cc}</div>);
+  return heading?(<div><Heading>{heading}</Heading>{cc}</div>): <div>{cc}</div>;
 
 }
