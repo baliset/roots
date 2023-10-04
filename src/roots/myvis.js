@@ -116,7 +116,7 @@ function createEdge(aidx, bidx, edges) {
     if (mappedEdges[key])
         return null;
 
-    var edge = {from: aidx + 1, to: bidx + 1};
+    const edge = {from: aidx + 1, to: bidx + 1};
     mappedEdges[key]=true;
     edgeCount++;
 
