@@ -1,6 +1,7 @@
 /**
  * Created by hzamir on 10/13/14. revised 10/2/2023
  */
+import {mischalef} from "./mischalfim";
 
 function populateNodes(roots, nodeMax)
 {
@@ -17,65 +18,6 @@ function populateNodes(roots, nodeMax)
 }
 
 
-// these are arrays of associated letters that each one can be interchanged for any of the others
-// this will be used to build the mischalfim map
-const arrMischalfim = [
-  // wholesale phonetic families (found in hirsch)
-  {kind: 'gutturals', data: ['\u05d0', '\u05d4', '\u05d7', '\u05e2']}, // alef, he, ches, ayin
-  {kind: 'palatals', data:  ['\u05d2','\u05e7', '\u05db', '\u05d9']}, // gimmel qof chaf yod!
-  {kind: 'labials', data:   ['\u05d1', '\u05e4', '\u05de']},           // labials beis, peh, mem
-  {kind: 'dentals', data:   ['\u05d3','\u05d8','\u05ea' ]},             // dalet tes taf
-  {kind: 'sibilants', data: ['\u05e9', '\ufb2b', '\u05e6', '\u05e1','\u05d6']},  // shin sin tzadi samech zayin
-
-
-  {kind: 'daletzayin', data:['\u05d3','\u05d6']}, // dalet to zayin
-  {kind: 'zayintzadi', data:  ['\u05d6', '\u05e6']}, // zayin tzadi
-  {kind: 'tzadi ayin', data:  ['\u05e6', '\u05e2']}, //  tzadi ayin
-  {kind: 'tzadi tes', data:  ['\u05e6', '\u05d8']}, //  tzadi tes
-
-  {kind: 'vav yod', data: ['\u05d5','\u05d9']}, // vav to yod
-  {kind: 'shin taf', data:  ['\u05e9', '\u05ea']}, // shin to taf
-  {kind: 'shin sin', data: ['\u05e9', '\ufb2b']} // shin to sin
-    //['\u05dc','\u05e8'], // lamed to resh
-];
-
-
-
-function buildMischalfim(arr)
-{
-  const result = {};
-
-  for (let i = 0; i < arr.length; ++i) {
-    const set = arr[i].data;
-    for (var j = 0; j < set.length; ++j) {
-      const key = set[j];
-      for (var k = 0; k < set.length; ++k) {
-        const m = set[k];
-        if (m !== key) {
-          let o = result[key];
-          if (o === undefined) {
-            o = result[key] = {};
-          }
-          o[m]=1;
-        }
-      }  // each item in the set as an entry (excepting the current key itself)
-    } // each item in set as the key to create in map
-  } // for each set of interchangeable characters
-
-  return result;
-}
-
-// check a map of maps mischalfim for letters that substitute for other letters
-// and use those to generate a connection. Any mischalef relationship will do
-const mischalfim = buildMischalfim(arrMischalfim);
-
-
-function mischalef(a,b)
-{
-    const ao = mischalfim[a];
-
-    return (ao && ao[b]);
-}
 
 function twoMatch(p,e,l, cand)
 {
@@ -128,6 +70,7 @@ function doubledLast(p,e,l, root)
 
 function pairMischalef(p,e,l, cand)
 {
+return
      if(
          e === l            &&       // doubled src last letters
          cand.E === cand.L  &&       // doubled dst last letters
@@ -138,7 +81,9 @@ function pairMischalef(p,e,l, cand)
 
      {
          return true;
-     }
+     } else {
+        return false;
+      }
 }
 // return index of matching item from
 function findEdge(p,e,l, roots, index)
@@ -157,7 +102,7 @@ function findEdge(p,e,l, roots, index)
     return -1;
 }
 
-const mappedEdges = {};
+let mappedEdges = {};
 let edgeCount = 0;
 function createEdge(aidx, bidx, edges) {
     if(bidx < 0)
@@ -209,7 +154,11 @@ function createEdge(aidx, bidx, edges) {
 function populateEdges(roots, hardMax, edgeMax) {
     const edges = [];
 
-    console.log('populate edges: hardMax', hardMax);
+   mappedEdges = {};
+   edgeCount = 0;
+
+
+  console.log('populate edges: hardMax', hardMax);
     for (let i = 0, len = hardMax; i < len; ++i) {
         const src = roots[i];
         for(let j = 0, mlen = hardMax; j < mlen; ++j)
@@ -239,34 +188,8 @@ function diagram(list, nodeMax, edgeMax)
         nodes: nodes,
         edges: edges
     };
-    const options = {
-        width: '1000px',
-        height: '800px',
-        nodes: {
-            color: {
-                background: 'white',
-                border: 'cyan',
-                highlight: {
-                    background: 'pink',
-                    border: 'red'
-                }
-            },
-            shape: 'ellipse'
-        },
-        edges: { color:'white', width: 4},
-        interaction: {
-          keyboard: {
-            speed: {
-              x: 10,
-              y: 10,
-              zoom: 0.02
-            }
-          }
-        }
-
-    };
     // const network = new vis.Network(container, data, options);
-    return {nodeMax, edgeMax, options, data};
+    return {nodeMax, edgeMax, data};
 
 }
 
@@ -277,4 +200,5 @@ export function renderGraphData(list, maxNodes, maxEdges)
     return diagram(list, nodeMax, maxEdges);
 }
 
+// reset graphableRows from outside to communicate what to render
 export const toRender = {graphableRows:{}}

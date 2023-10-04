@@ -6,14 +6,14 @@ import {roots} from '../roots/roots';
 import Graph from "react-vis-graph-wrapper";
 import "vis-network/styles/vis-network.css";
 import {renderGraphData, toRender} from "../roots/myvis.js";
+import {defaultOptions} from "../roots/options";
 
 toRender.graphableRows = roots; // the full list
 const   defaultGraph = {nodes: [], edges: []};
 
-const defaultOptions = {
-  layout: { hierarchical: false},
-  edges: { color: "white"}
-};
+
+
+
 
 const events =  {
   select: ({ nodes, edges }) => {
@@ -30,11 +30,10 @@ export const  RtStarView = ()=>{
   const {
   } = useSelector(s=>s);
 
-  const [maxNodes, setMaxNodes] = useState(1995); // get limits.nodes value here
-  const [maxEdges, setMaxEdges] = useState(20000); // get limits.edges value here
+  const [maxNodes, setMaxNodes] = useState(2001); // get limits.nodes value here
+  const [maxEdges, setMaxEdges] = useState(200_000); // get limits.edges value here
 
 
-  const {initialData, initialOptions} = renderGraphData(toRender.graphableRows, maxNodes, maxEdges);
   const [graph, setGraph] = useState(defaultGraph);
   const [options, setOptions] = useState(defaultOptions);
 
@@ -43,10 +42,9 @@ export const  RtStarView = ()=>{
 
   const render = useCallback(()=>{
 
-   const { data, options,  nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, maxNodes, maxEdges);
+   const { data, nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, maxNodes, maxEdges);
    console.log(`new graphData`, data);
    setGraph(data);
-   setOptions(options);
   }, [maxNodes, maxEdges]);
 
    return  (
@@ -54,12 +52,14 @@ export const  RtStarView = ()=>{
         <h1>Star view</h1>
 
         <label>Maximum number of roots:</label>&nbsp;
-        <input type="number" min={1} max={1995} value={maxNodes} onChange={chMaxNodes}/>&nbsp;
+        <input type="number" min={1} max={2_001} step={50} value={maxNodes} onChange={chMaxNodes}/>&nbsp;
         <label>connections:</label>&nbsp;
-        <input type="number" min={1} max={1995} value={maxEdges} onChange={chMaxEdges}/>
+        <input type="number" min={100} max={200_000} step={1_000} value={maxEdges} onChange={chMaxEdges}/>
         <hr/>
         <button onClick={render}>Show results</button>
-        <Graph events={events} graph={graph} options={options} style={{  backgroundColor: 'midnightblue', height: "100%", width:"100%"}} />
+        <div style={{  backgroundColor: 'midnightblue', height: "100%", width:"100%"}}>
+        <Graph events={events} graph={graph} options={options} style={{  backgroundColor: 'midnightblue'}} />
+        </div>
       </div>
 
     );
