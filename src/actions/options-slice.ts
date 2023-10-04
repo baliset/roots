@@ -28,10 +28,23 @@ const initialState:OptionsState = {
 // type value will be added automatically to creators to match the key, or better yet to match the slice/key
 const creators = {
   choose: (choices:MischalefChoices) => ({choices}),
-  chooseOne: (choice:string, value:boolean) => ({choice, value})
+  chooseOne: (choice:string, value:boolean) => ({choice, value}),
+  clearChoices: () => ({}),
+  allChoices:()=> ({}),
 };
 
 const reducers:OptionsReducers = {
+  allChoices: (s) => {
+    const choices = {...s.choices};
+    Object.keys(choices).forEach(k=>choices[k]=true);
+    return {...s, choices, mischalfim:filterChosen(s.allmischalfim, choices)};
+  },
+
+  clearChoices: (s) => {
+    const choices = {...s.choices};
+    Object.keys(choices).forEach(k=>choices[k]=false);
+    return {...s, choices, mischalfim:filterChosen(s.allmischalfim, choices)};
+  },
   choose: (s, {choices})=>({...s, choices, mischalfim:filterChosen(s.allmischalfim, choices)}),
   chooseOne: (s, {choice, value} )=>
   {
