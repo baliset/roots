@@ -56,7 +56,7 @@ function populateNodes(roots, nodeMax)
 
 
 
-function twoMatch(p,e,l, cand)
+function atLeastTwoMatch(p,e,l, cand)
 {
     let matches = 0;
     if(p === cand.P)
@@ -94,7 +94,7 @@ function firstOrLastTwoMatch(p,e,l,cand)
 // and the third letter is the second and third letter or the second root
 function doubledLast(p,e,l, root)
 {
-    return (p === root.P && e === vav && root.E === root.L  && root.L === l);
+    return (e === vav && root.L === l && p === root.P &&  root.E === root.L );
 }
 
 // maybe revise with option that first letter is identical, and not always connect because first letter is also mischalef
@@ -115,23 +115,29 @@ return
         return false;
       }
 }
+let  useVavToDoubled = true;
+let removeFree = false;
+
 // return index of matching item from
 function findEdge(p,e,l, roots, index)
 {
     const cand = roots[index];
 
-    if (twoMatch(p, e, l, cand)) {
+    if (atLeastTwoMatch(p, e, l, cand)) { // if two of the three letters of shoresh are the same
+
+        // if a remaining letter is a mischalef
         if(mischalef(p, cand.P) || mischalef(e, cand.E) || mischalef(l, cand.L)) {
             return index;
-        } else if(doubledLast(p,e,l,cand)) {
+        } else if(useVavToDoubled && doubledLast(p,e,l,cand)) {
             return index;
         }
-    } else if(pairMischalef(p,e,l,cand)) {
-        return index;
+    // } else if(pairMischalef(p,e,l,cand)) {  // not sure which cases this adds
+    //     return index;
     }
     return -1;
 }
 
+let mappedNodes = {}
 let mappedEdges = {};
 let edgeCount = 0;
 function createEdge(aidx, bidx, edges) {
@@ -185,6 +191,7 @@ function populateEdges(roots, hardMax, edgeMax) {
     const edges = [];
 
    mappedEdges = {};
+   mappedNodes = {};
    edgeCount = 0;
 
 
@@ -199,17 +206,33 @@ function populateEdges(roots, hardMax, edgeMax) {
                 const matchindex = findEdge(src.P, src.E, src.L, roots, j);
                 if (matchindex >= 0) {
                     createEdge(i, matchindex, edges);
+                    mappedNodes[src.r] =true;
+                    mappedNodes[roots[j].r] = true;
                 }
             }
         }
     } // end for each src root
-    return edges;
+    return  edges;
 }
 
 function diagram(list, nodeMax, edgeMax)
 {
-    const nodes = populateNodes(list, nodeMax);
-    const edges = populateEdges(list, nodeMax, edgeMax);
+     nodeMax = Math.min(nodeMax, list.length);
+
+
+    let nodes = populateNodes(list, nodeMax);
+    console.log(`nodes`, nodes);
+
+    let edges = populateEdges(list, nodeMax, edgeMax);
+
+    // remove anything from list that is not contained in mapped edges
+    if(removeFree) {
+        const unfreelist = list.filter(o=>mappedNodes[o.r]); // shrink the list, and do it again!
+        nodeMax = Math.min(nodeMax, unfreelist.length);
+
+        nodes = populateNodes(unfreelist, nodeMax);
+        edges = populateEdges(unfreelist, nodeMax, edgeMax);
+    }
 //
 //        dumpNodes(nodes);
 //        dumpEdges(edges);
@@ -224,12 +247,12 @@ function diagram(list, nodeMax, edgeMax)
 }
 
 
-export function renderGraphData(list, amischalfim, maxNodes, maxEdges)
+export function renderGraphData(list, amischalfim, otherChoices, maxNodes, maxEdges)
 {
     mischalfim = buildMischalfim(amischalfim);
-
-    const nodeMax = Math.min(maxNodes, list.length);
-    return diagram(list, nodeMax, maxEdges);
+    useVavToDoubled =   otherChoices.vavToDoubled;
+    removeFree = otherChoices.removeFree;
+    return diagram(list, maxNodes, maxEdges);
 }
 
 // reset graphableRows from outside to communicate what to render

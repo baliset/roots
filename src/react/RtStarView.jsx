@@ -29,7 +29,7 @@ const events =  {
 export const  RtStarView = ()=>{
 
   const {
-    options: {choices, mischalfim}
+    options: {choices, otherChoices, mischalfim}
   } = useSelector(s=>s);
 
 
@@ -50,11 +50,11 @@ export const  RtStarView = ()=>{
 
   const render = useCallback(()=>{
 
-   const { data, nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, mischalfim, maxNodes, maxEdges);
+   const { data, nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, mischalfim, otherChoices, maxNodes, maxEdges);
    console.log(`new graphData`, data);
    setReset(false);
    setGraph(data);
-  }, [maxNodes, maxEdges, mischalfim]);
+  }, [maxNodes, maxEdges, mischalfim, otherChoices]);
 
 
 
@@ -71,7 +71,8 @@ export const  RtStarView = ()=>{
         <button  onClick={actions.options.allChoices}>Select All</button>
         <button  onClick={actions.options.clearChoices}>Clear All</button>
         </h3>
-        <CheckGroup choices={choices} setChoice={actions.options.chooseOne}/>
+          <CheckGroup choices={otherChoices} setChoice={actions.options.chooseOtherOne}/>
+          <CheckGroup choices={choices} setChoice={actions.options.chooseOne}/>
         </div>
         <hr/>
         <label>Maximum number of roots:</label>&nbsp;
