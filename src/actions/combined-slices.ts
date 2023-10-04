@@ -1,25 +1,23 @@
 // -- standard slices --
 import {sliceConfig as requestSlice,RequestState} from "./request-slice";
 import {sliceConfig as notifySlice,NotifyState} from "./notify-slice";
-import {sliceConfig as coverageSlice,CoverageState} from './coverage-slice';
+import {sliceConfig as optionsSlice,OptionsState} from "./options-slice";
+
 
 //-- standard middlewares
 import {loggingMiddleware} from "./logging-middleware";
 import {fatalMiddleware} from './fatal-middleware';
-import {coverageMiddleware, coverageMiddlewareInit} from './coverage-middleware';
 
 // -- app specific slices --
 import {sliceConfig as localSlice, LocalState} from "./local-slice";
-import {sliceConfig as controlSlice, ControlState} from "./control-slice";
-import {sliceConfig as patchSlice, PatchState} from './patch-slice';
 
 
 //-- app specific middlewares
 
 
-export const allSlices = [requestSlice, notifySlice, coverageSlice, localSlice, controlSlice, patchSlice];
-export const allMiddlewares = [ fatalMiddleware, coverageMiddleware, loggingMiddleware];
-export const middlewareInits = [  coverageMiddlewareInit];
+export const allSlices = [requestSlice, notifySlice, localSlice,  optionsSlice];
+export const allMiddlewares = [ fatalMiddleware, loggingMiddleware];
+export const middlewareInits = [  ];
 
 // when I get smarter about deriving types in typescript I can presumably fix this (he claims)
 // but the important thing is it makes every part of state known
@@ -28,9 +26,7 @@ export const middlewareInits = [  coverageMiddlewareInit];
 export type TotalState = {
    request: RequestState;
     notify: NotifyState;
-  coverage: CoverageState;
      local: LocalState;
-   control: ControlState;
-   patch: PatchState;
+   options: OptionsState;
 }
 

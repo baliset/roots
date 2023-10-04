@@ -50,13 +50,36 @@ type Sin    = '\ufb2b';
 type Tav    = '\u05ea';
 
 
-type Ot = Alef|Bet|Gimmel|Daled|He|Vav|Zayin|Chet|Tet|Yod|Kaf|Lamed|Mem|Nun|Samech|Ayin|Pe|Tzadi|Qof|Resh|Shin|Sin|Tav;
+export type Ot = Alef|Bet|Gimmel|Daled|He|Vav|Zayin|Chet|Tet|Yod|Kaf|Lamed|Mem|Nun|Samech|Ayin|Pe|Tzadi|Qof|Resh|Shin|Sin|Tav;
 
-type Mischalef = {kind:string, data:Ot[]}
+export type MischalefOtiot = Ot[];
+
+// export type MischalefGroup = {kind: string, group:MischalefOtiot[]};
+
+export type Mischalef = {kind:string, data:MischalefOtiot}
+
+export type MischalefChoices = string[];
+
+export function allChoices(arr:Mischalef[]):MischalefChoices
+{
+  return Array.from(new Set(arr.map(v=>v.kind))); // get the unique kind strings from array of Mischalef
+}
+
+// return abbreviated array whose kind is included in choices from total set
+export function filterChosen(arr:Mischalef[], choices:MischalefChoices)
+{
+  const set:Set<string> = new Set(choices);
+
+  return arr.filter((o)=>set.has(o.kind));
+}
 
 export const arrMischalfim:Mischalef[] = [
   // wholesale phonetic families (found in hirsch)
-  {kind: 'gutturals', data: [alef, he, chet, ayin]},
+  {kind: 'gutturals', data: [alef, he]},
+  {kind: 'gutturals', data: [alef, ayin]},
+  {kind: 'gutturals', data: [he, chet]},
+
+
   {kind: 'palatals',  data:  [gimmel, qof, kaf, yod]}, // gimmel qof chaf yod!
   {kind: 'labials',   data:   [bet,pe, mem]},           // labials beis, peh, mem
   {kind: 'dentals',   data:   [daled,tet,tav]},             // dalet tes taf
