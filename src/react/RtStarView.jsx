@@ -6,7 +6,9 @@ import {roots} from '../roots/roots';
 import Graph from "react-vis-graph-wrapper";
 import "vis-network/styles/vis-network.css";
 import {renderGraphData, toRender} from "../roots/myvis.js";
+import {renderGraphData, toRender} from "../roots/myvis.js";
 import {defaultOptions} from "../roots/options";
+import {CheckGroup} from "./CheckGroup";
 
 toRender.graphableRows = roots; // the full list
 const   defaultGraph = {nodes: [], edges: []};
@@ -28,6 +30,7 @@ const events =  {
 export const  RtStarView = ()=>{
 
   const {
+    options: {choices, mischalfim}
   } = useSelector(s=>s);
 
   const [maxNodes, setMaxNodes] = useState(2001); // get limits.nodes value here
@@ -42,15 +45,15 @@ export const  RtStarView = ()=>{
 
   const render = useCallback(()=>{
 
-   const { data, nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, maxNodes, maxEdges);
+   const { data, nodeMax, edgeMax} = renderGraphData(toRender.graphableRows, mischalfim, maxNodes, maxEdges);
    console.log(`new graphData`, data);
    setGraph(data);
   }, [maxNodes, maxEdges]);
-
+//heading, active, name, choices,  setChoice
    return  (
       <div key={`${graph.length}-${options.length}`} style={{marginTop:'30px'}}>
         <h1>Star view</h1>
-
+        <CheckGroup heading="Osios Mischalfos" name="mischalfim" choices={choices} setChoice={actions.options.chooseOne}/>
         <label>Maximum number of roots:</label>&nbsp;
         <input type="number" min={1} max={2_001} step={50} value={maxNodes} onChange={chMaxNodes}/>&nbsp;
         <label>connections:</label>&nbsp;

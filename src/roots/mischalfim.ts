@@ -1,29 +1,30 @@
+import {oReduce} from '../utils/oreduce';
 // these are arrays of associated letters that each one can be interchanged for any of the others
 // this will be used to build the mischalfim map
 
-const alef   = '\u05d0';
-const bet    = '\u05d1';
-const gimmel = '\u05d2';
-const daled  = '\u05d3';
-const he     = '\u05d4';
-const vav    = '\u05d5';
-const zayin  = '\u05d6';
-const chet   = '\u05d7';
-const tet    = '\u05d8';
-const yod    = '\u05d9';
-const kaf    = '\u05db';
-const lamed  = '\u05dc';
-const mem    = '\u05de';
-const nun    = '\u05e0';
-const samech = '\u05e1';
-const ayin   = '\u05e2';
-const pe     = '\u05e4';
-const tzadi  = '\u05e6';
-const qof    = '\u05e7';
-const resh   = '\u05e8';
-const shin   = '\u05e9';
-const sin    = '\ufb2b';
-const tav    = '\u05ea';
+export const alef   = '\u05d0';
+export const bet    = '\u05d1';
+export const gimmel = '\u05d2';
+export const daled  = '\u05d3';
+export const he     = '\u05d4';
+export const vav    = '\u05d5';
+export const zayin  = '\u05d6';
+export const chet   = '\u05d7';
+export const tet    = '\u05d8';
+export const yod    = '\u05d9';
+export const kaf    = '\u05db';
+export const lamed  = '\u05dc';
+export const mem    = '\u05de';
+export const nun    = '\u05e0';
+export const samech = '\u05e1';
+export const ayin   = '\u05e2';
+export const pe     = '\u05e4';
+export const tzadi  = '\u05e6';
+export const qof    = '\u05e7';
+export const resh   = '\u05e8';
+export const shin   = '\u05e9';
+export const sin    = '\ufb2b';
+export const tav    = '\u05ea';
 
 type Alef   = '\u05d0';
 type Bet    = '\u05d1';
@@ -58,19 +59,20 @@ export type MischalefOtiot = Ot[];
 
 export type Mischalef = {kind:string, data:MischalefOtiot}
 
-export type MischalefChoices = string[];
+export type MischalefChoices = Record<string, boolean>;
+
 
 export function allChoices(arr:Mischalef[]):MischalefChoices
 {
-  return Array.from(new Set(arr.map(v=>v.kind))); // get the unique kind strings from array of Mischalef
+  return oReduce(arr, (o:Mischalef)=>[o.kind, true], {});  // get the unique kind strings from array of Mischalef all enabled
 }
+
+
 
 // return abbreviated array whose kind is included in choices from total set
 export function filterChosen(arr:Mischalef[], choices:MischalefChoices)
 {
-  const set:Set<string> = new Set(choices);
-
-  return arr.filter((o)=>set.has(o.kind));
+  return arr.filter((o)=>choices[o.kind]);
 }
 
 export const arrMischalfim:Mischalef[] = [
@@ -97,37 +99,3 @@ export const arrMischalfim:Mischalef[] = [
   {kind: 'lamed resh', data: [lamed, resh] }
 ];
 
-function buildMischalfim(arr:Mischalef[])
-{
-  const result:any = {};
-
-  for (let i = 0; i < arr.length; ++i) {
-    const set = arr[i].data;
-    for (let j = 0; j < set.length; ++j) {
-      const key = set[j];
-      for (let k = 0; k < set.length; ++k) {
-        const m = set[k];
-        if (m !== key) {
-          let o = result[key];
-          if (o === undefined) {
-            o = result[key] = {};
-          }
-          o[m]=1;
-        }
-      }  // each item in the set as an entry (excepting the current key itself)
-    } // each item in set as the key to create in map
-  } // for each set of interchangeable characters
-
-  return result;
-}
-
-// check a map of maps mischalfim for letters that substitute for other letters
-// and use those to generate a connection. Any mischalef relationship will do
- const mischalfim = buildMischalfim(arrMischalfim);
-
-export function mischalef(a:Ot,b:Ot)
-{
-  const ao = mischalfim[a];
-
-  return (ao && ao[b]);
-}

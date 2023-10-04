@@ -1,7 +1,44 @@
 /**
  * Created by hzamir on 10/13/14. revised 10/2/2023
  */
-import {mischalef} from "./mischalfim";
+import {arrMischalfim, vav} from "./mischalfim";
+
+
+function buildMischalfim(arr)
+{
+    const result = {};
+
+    for (let i = 0; i < arr.length; ++i) {
+        const set = arr[i].data;
+        for (let j = 0; j < set.length; ++j) {
+            const key = set[j];
+            for (let k = 0; k < set.length; ++k) {
+                const m = set[k];
+                if (m !== key) {
+                    let o = result[key];
+                    if (o === undefined) {
+                        o = result[key] = {};
+                    }
+                    o[m]=1;
+                }
+            }  // each item in the set as an entry (excepting the current key itself)
+        } // each item in set as the key to create in map
+    } // for each set of interchangeable characters
+
+    return result;
+}
+
+// check a map of maps mischalfim for letters that substitute for other letters
+// and use those to generate a connection. Any mischalef relationship will do
+let mischalfim = buildMischalfim(arrMischalfim);
+
+export function mischalef(a,b)
+{
+    const ao = mischalfim[a];
+
+    return (ao && ao[b]);
+}
+
 
 function populateNodes(roots, nodeMax)
 {
@@ -57,17 +94,10 @@ function firstOrLastTwoMatch(p,e,l,cand)
 // and the third letter is the second and third letter or the second root
 function doubledLast(p,e,l, root)
 {
-    if(p === root.P && e ==='\u05d5')
-    {
-        if(root.E === root.L && root.L === l)
-        {
-            return true;
-        }
-    }
-    return false;
-
+    return (p === root.P && e === vav && root.E === root.L  && root.L === l);
 }
 
+// maybe revise with option that first letter is identical, and not always connect because first letter is also mischalef
 function pairMischalef(p,e,l, cand)
 {
 return
@@ -194,8 +224,10 @@ function diagram(list, nodeMax, edgeMax)
 }
 
 
-export function renderGraphData(list, maxNodes, maxEdges)
+export function renderGraphData(list, amischalfim, maxNodes, maxEdges)
 {
+    mischalfim = buildMischalfim(amischalfim);
+
     const nodeMax = Math.min(maxNodes, list.length);
     return diagram(list, nodeMax, maxEdges);
 }

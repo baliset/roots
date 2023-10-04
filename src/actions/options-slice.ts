@@ -28,10 +28,16 @@ const initialState:OptionsState = {
 // type value will be added automatically to creators to match the key, or better yet to match the slice/key
 const creators = {
   choose: (choices:MischalefChoices) => ({choices}),
+  chooseOne: (choice:string, value:boolean) => ({choice, value})
 };
 
 const reducers:OptionsReducers = {
   choose: (s, {choices})=>({...s, choices, mischalfim:filterChosen(s.allmischalfim, choices)}),
+  chooseOne: (s, {choice, value} )=>
+  {
+    const choices= {...s.choices, [choice]:value };
+    return {...s, choices, mischalfim:filterChosen(s.allmischalfim, choices)};
+  }
 };
 
 export const sliceConfig:SliceConfig = {name: 'options', creators, initialState, reducers};
