@@ -17,7 +17,7 @@ import {sliceConfig as localSlice, LocalState} from "./local-slice";
 
 export const allSlices = [requestSlice, notifySlice, localSlice,  optionsSlice];
 export const allMiddlewares = [ fatalMiddleware, loggingMiddleware];
-export const middlewareInits = [  ];
+export const middlewareInits:any[] = [  ];
 
 // when I get smarter about deriving types in typescript I can presumably fix this (he claims)
 // but the important thing is it makes every part of state known
