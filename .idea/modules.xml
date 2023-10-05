@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/linnstorm.iml" filepath="$PROJECT_DIR$/.idea/linnstorm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/roots.iml" filepath="$PROJECT_DIR$/.idea/roots.iml" />
     </modules>
   </component>
 </project>
