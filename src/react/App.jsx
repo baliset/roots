@@ -10,7 +10,6 @@ import {SnackbarProvider} from "notistack";
 
 import {NotifyWrapper} from "./NotifyWrapper";
 import {Modal} from "./Modal";
-import {SliceView} from "./SliceView";
 import {RtGridView} from "./RtGridView.jsx";
 import {RtFiles} from "./RtFiles.jsx";
 import {RtStarView} from "./RtStarView.jsx";
@@ -40,10 +39,10 @@ const Layout = styled.div`
     row-gap:4px;
     column-gap:4px;
 
-    grid-template-columns: ${props=>props.left}px minmax(0, 1fr) ${props=>props.right}px;
+    grid-template-columns: ${props=>props.left}px minmax(0, 1fr);
     grid-template-rows: 30px minmax(0, 1fr);
-    grid-template-areas: "LNavbar Navbar Navbar"
-                         "Left CenterBody Right";
+    grid-template-areas: "LNavbar Navbar"
+                         "Left CenterBody";
 `;
 
 Layout.defaultProps = {left:0, right:0};
@@ -117,7 +116,6 @@ const MyNavLink = ({to, children, curPath})=> {
 }
 
 
-const AllSlices = () => <div>{Object.keys(actions).map((slice)=><SliceView key={slice} slice={slice}/>)}</div>;
 
 
 let messageCtr = 0;
@@ -230,7 +228,6 @@ const  App = () => {
             }
           </CenterBody>
 
-            <Right><AllSlices/></Right>
         </Layout>
    </SnackbarProvider>
     );
