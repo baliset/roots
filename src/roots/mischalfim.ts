@@ -57,7 +57,7 @@ export type MischalefOtiot = Ot[];
 
 // export type MischalefGroup = {kind: string, group:MischalefOtiot[]};
 
-export type Mischalef = {kind:string, data:MischalefOtiot}
+export type Mischalef = {kind:string, data:string[]} // typescript complains about using MischalefOtiot
 
 export type MischalefChoices = Record<string, boolean>;
 
@@ -75,17 +75,21 @@ export function filterChosen(arr:Mischalef[], choices:MischalefChoices)
   return arr.filter((o)=>choices[o.kind]);
 }
 
+// see Etymological Dictionary of Biblical Hebrew, Appendix A page 293 for listing of mischalfim
+// also there is appendix b, we should encode all the known cognates there to ensure that they come up
+// or are at least emphasized as known cognates
+
+// gradational variants need more work
+// aramaisms need to be put named seperately
 export const arrMischalfim:Mischalef[] = [
   // wholesale phonetic families (found in hirsch)
-  {kind: 'gutturals', data: [alef, he]},
-  {kind: 'gutturals', data: [alef, ayin]},
-  {kind: 'gutturals', data: [he, chet]},
+  {kind: `gutturals`, data: [alef, he, ayin, chet]},
 
 
-  {kind: 'palatals',  data:  [gimmel, qof, kaf, yod]}, // gimmel qof chaf yod!
+  {kind: 'palatals',  data:   [gimmel, qof, kaf, yod]}, // gimmel qof chaf yod!
   {kind: 'labials',   data:   [bet,pe, mem]},           // labials beis, peh, mem
   {kind: 'dentals',   data:   [daled,tet,tav]},             // dalet tes taf
-  {kind: 'sibilants', data: [shin,sin,tzadi,samech,zayin]},  // shin sin tzadi samech zayin
+  {kind: `sibilants`, data: [shin,sin,tzadi,samech,zayin]},  // shin sin tzadi samech zayin
 
 
   {kind: 'daletzayin', data:[daled, zayin]}, // dalet to zayin
@@ -97,5 +101,5 @@ export const arrMischalfim:Mischalef[] = [
   {kind: 'shin taf', data:  [shin, tav]}, // shin to taf
   {kind: 'shin sin', data:  [shin, sin]},    // shin to sin
   {kind: 'lamed resh', data: [lamed, resh] }
-];
+].map(o=>({...o, kind:`${o.kind}:(${o.data.join('/')})`}));
 
